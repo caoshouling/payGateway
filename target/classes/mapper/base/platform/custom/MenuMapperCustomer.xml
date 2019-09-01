@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ins.platform.dcode.dao.MenuMapper">
+  
+  <select id="selectMenuListByUserCode" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+   
+    select  m.* from  sys_menu m, sys_user_role  ur, sys_role_menu rm  
+    		where ur.user_id = #{userId,jdbcType=INTEGER} 
+    		and ur.role_id = rm.role_id  
+    		and m.id =  rm.menu_id 
+  </select>
+  
+</mapper>

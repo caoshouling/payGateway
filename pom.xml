@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xml>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId> 
+		<version>2.1.7.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.sinosoft</groupId>
+	<artifactId>payGateway</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>payGateway</name>
+	<description>支付查询和缴费确认处理</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<javax.annotation.version>1.3.2</javax.annotation.version>
+		<fastjson.version>1.2.55</fastjson.version>
+		<hutool.version>4.6.1</hutool.version>
+		<mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
+		<druid-spring-boot-starter.version>1.1.20</druid-spring-boot-starter.version>
+		<druid.version>1.1.19</druid.version>
+		<httpclient.version>4.5.8</httpclient.version>
+		<QLExpress.version>3.2.3</QLExpress.version>
+		<commons-lang3.version>3.9</commons-lang3.version>
+		<jdom.version>2.0.6</jdom.version>
+		<xstream.version>1.4.11.1</xstream.version>
+		<mybatis-paginator.version>1.2.17</mybatis-paginator.version>
+		
+		
+		
+		<hibernate.validator.version>5.4.3.Final</hibernate.validator.version>
+		<javamelody-spring-boot-starter.version>1.79.0</javamelody-spring-boot-starter.version>
+		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+		<com.google.guava.version>28.1-jre</com.google.guava.version>
+		
+		
+		<pagehelper.version>5.1.10</pagehelper.version>
+		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
+		
+		
+		
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>${mybatis-spring-boot-starter.version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>${springfox-swagger2.version}</version>
+		</dependency>
+		 <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+        <!-- 谷歌分页 com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>${com.google.guava.version}</version>
+		</dependency>
+        
+		<!-- 分页插件 mybatis-paginator -->
+		<dependency>
+		    <groupId>com.github.miemiedev</groupId>
+		    <artifactId>mybatis-paginator</artifactId>
+		    <version>${mybatis-paginator.version}</version>
+		</dependency>
+		
+		<!-- 阿里巴巴数据源 druid-spring-boot-starter -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid-spring-boot-starter</artifactId>
+		    <version>${druid-spring-boot-starter.version}</version>
+		</dependency>  
+		<!-- httpclient成为restTemplate的实现。 -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		</dependency>
+				
+		<!-- FastJson替换Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<!-- FastJson替换Jackson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+		<!-- commons-lang3 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		</dependency>
+		<!-- xstream -->
+		<dependency>
+		    <groupId>com.thoughtworks.xstream</groupId>
+		    <artifactId>xstream</artifactId>
+		    <version>${xstream.version}</version>
+		</dependency>
+		<!-- jdom2-->
+		<dependency>
+		    <groupId>org.jdom</groupId>
+		    <artifactId>jdom2</artifactId>
+		</dependency>
+		<!-- 工具类hutool-all -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>${hutool.version}</version>
+		</dependency>
+		<!--工具类-阿里巴巴QLExpress脚本引擎 -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>QLExpress</artifactId>
+		    <version>${QLExpress.version}</version>
+		</dependency> 
+		<!-- java注解，如@PostConstruct等 -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
+		<!-- Maven中没有，用本地lib下的ojdbc6 
+		    groupId和artifactId以及version都是可以随便填写的 ，scope必须填写为system-->
+		<!-- <dependency>
+			<groupId>oracle.core</groupId>  
+			<artifactId>ojdbc</artifactId>  
+			<version>6</version>  
+			<scope>system</scope>  
+			<systemPath>${project.basedir}/lib/ojdbc6.jar  
+			</systemPath>  
+		</dependency>  -->
+		<!--mysql驱动 -->
+		<dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+      	</dependency>
+      	
+		<!--pagehelper-->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper-spring-boot-starter</artifactId>
+		    <version>1.2.3</version>
+		</dependency>
+		
+	  	<!-- hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>${hibernate.validator.version}</version>
+		</dependency>
+		
+      	<!-- 监控 javamelody-spring-boot-starter -->
+		<dependency>
+		    <groupId>net.bull.javamelody</groupId>
+		    <artifactId>javamelody-spring-boot-starter</artifactId>
+		    <version>${javamelody-spring-boot-starter.version}</version>
+		</dependency>
+      	
+		<!-- ins-framework-mybatis-6.0.2-SNAPSHOT.jar-->
+		<dependency>
+			<groupId>com.sinosoft</groupId>  
+			<artifactId>ins-framework-mybatis</artifactId>  
+			<version>6.0.2-SNAPSHOT</version>  
+			<scope>system</scope>  
+			<systemPath>${project.basedir}/lib/ins-framework-mybatis-6.0.2-SNAPSHOT.jar  
+			</systemPath>  
+		</dependency> 
+		<!-- ins-framework-lang-6.0.3.jar -->
+		<dependency>
+			<groupId>com.sinosoft</groupId>  
+			<artifactId>ins.framework.lang</artifactId>  
+			<version>6.0.3</version>  
+			<scope>system</scope>  
+			<systemPath>${project.basedir}/lib/ins-framework-lang-6.0.3.jar  
+			</systemPath>  
+		</dependency> 
+		<!-- ins-framework-utils-6.0.2.jar -->
+		<dependency>
+			<groupId>com.sinosoft</groupId>  
+			<artifactId>ins.framework.utils</artifactId>  
+			<version>6.0.2</version>  
+			<scope>system</scope>  
+			<systemPath>${project.basedir}/lib/ins-framework-utils-6.0.2.jar  
+			</systemPath>  
+		</dependency> 
+		
+		
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+				   <executable>true</executable>
+				   <includeSystemScope>true</includeSystemScope>
+				   <execution>
+			        	<goals> 
+			         		 <goal>repackage</goal>
+			        	</goals>
+			        </execution>
+			        <!-- 指定启动类：存在多个时需要指定，本例子中其实可以不指定 -->
+					<mainClass>com.sinosoft.payGateway.PayGatewayApplication</mainClass>
+				</configuration>
+				
+			</plugin>
+			
+		</plugins>
+	</build>
+
+</project>

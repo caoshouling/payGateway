@@ -1,0 +1,131 @@
+server: 
+  port: 8090 
+  servlet: 
+    context-path: /payGateway
+spring:
+  profiles:
+    active: test
+  application:
+    name: payGatway
+mybatis:
+  mapperLocations: classpath*:mapper/**/*Dao.xml
+  executor-type: REUSE 
+  configuration:
+    jdbc-type-for-null: VARCHAR
+    cache-enabled: false
+logging:
+  level:
+    org:
+      mybatis: INFO
+      springframework:
+        web: INFO
+        transaction: INFO
+    com:
+      github: INFO
+serverflag: 
+  code: 0
+---
+spring: 
+  profiles: local
+  datasource:
+    druid:
+      url: jdbc:oracle:thin:@10.13.1.94:1521:coredev
+      username: utic_busiapp
+      password: A9Tf2yiiYT6Z8zSyEjqiR3Sto8IP9JF1NAY5AJkp65thUFu0zNkvH0vsQVqLNqjrD3Zx/W9JgaMStcU8MfcYtA==  
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      initial-size: 5  
+      min-idle: 5  
+      max-active: 20  
+      max-wait: 300000  
+      time-between-eviction-runs-millis: 60000  
+      min-evictable-idle-time-millis: 300000  
+      validation-query: SELECT 1 FROM DUAL 
+      validation-query-timeout: 15000 
+      test-while-idle: true  
+      test-on-borrow: false  
+      test-on-return: false  
+      pool-prepared-statements: false  
+      max-pool-prepared-statement-per-connection-size: 20  
+      filters: config,stat
+      connection-properties: config.decrypt=true;druid.stat.slowSqlMillis=5000
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        url-pattern: '/druid/*'
+        reset-enable: false
+      web-stat-filter:
+        enabled: true
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+#     filter:
+#       stat:
+#         enabled: true
+#         db-type: oracle
+#         log-slow-sql: true
+#         slow-sql-millis: 5000
+         
+#  redis:
+#    host: localhost
+#    port: 6379 
+#    timeout: 3000
+#    pool:
+#      max-active: 8  
+#      max-wait: -1  
+#      max-idle: 8  
+#      min-idle: 0
+
+eviroment:
+       code: DevelopmentEnvironment90
+---
+spring: 
+  profiles: test
+  datasource:
+    druid:   
+      url: jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.13.1.73)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=coretest)))
+      username: utic_busiapp
+      password: A9Tf2yiiYT6Z8zSyEjqiR3Sto8IP9JF1NAY5AJkp65thUFu0zNkvH0vsQVqLNqjrD3Zx/W9JgaMStcU8MfcYtA==  
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      initial-size: 5  
+      min-idle: 5  
+      max-active: 20  
+      max-wait: 300000  
+      time-between-eviction-runs-millis: 60000  
+      min-evictable-idle-time-millis: 300000  
+      validation-query: SELECT 1 FROM DUAL 
+      validation-query-timeout: 15000 
+      test-while-idle: true  
+      test-on-borrow: false  
+      test-on-return: false  
+      pool-prepared-statements: false  
+      max-pool-prepared-statement-per-connection-size: 20  
+      filters: config,stat
+      connection-properties: config.decrypt=true;druid.stat.slowSqlMillis=5000
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        url-pattern: '/druid/*'
+        reset-enable: false
+      web-stat-filter:
+        enabled: true
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,druid/*'
+#     filter:
+#       stat:
+#         enabled: true
+#         db-type: oracle
+#         log-slow-sql: true
+#         slow-sql-millis: 5000
+#  redis:
+#    host: localhost
+#    port: 6379 
+#    timeout: 3000
+#    pool:
+#      max-active: 8  
+#      max-wait: -1  
+#      max-idle: 8  
+#      min-idle: 0
+eviroment:
+       code: UATTestEnvironment41
+     

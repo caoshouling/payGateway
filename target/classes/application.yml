@@ -1,0 +1,99 @@
+server: 
+  port: 8090 
+  servlet: 
+    context-path: /payGateway
+    session:
+    timeout: 1800  #30minute
+  tomcat:
+    max-connections: 300 #大于300将保存在请求队列
+    accept-count: 100 #请求缓存队列的最大个数
+    max-threads: 500
+    accesslog:
+      ennable: true
+      directory: /u02/corelog/backend-car/tomcat
+    
+spring:
+  profiles:
+    active: test
+  application:
+    name: payGatway
+  freemarker: 
+    suffix: ftl
+    charset: UTF-8
+    template-loader-path: classpath:/templates
+mybatis:
+  mapperLocations: ['classpath*:mapper/**/*Mapper.xml','classpath*:mapper/**/*MapperCustom.xml']
+  executor-type: REUSE 
+  configuration:
+    jdbc-type-for-null: VARCHAR
+    cache-enabled: false
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+logging:
+  level:
+    org:
+      mybatis: INFO
+      springframework:
+        web: debug
+        security: debug
+        transaction: INFO
+    com:
+      github: INFO
+serverflag: 
+  code: 0
+---
+spring: 
+  profiles: test
+  datasource:
+#   type: com.alibaba.druid.pool.DruidDataSource
+    druid:   
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/springmvc?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: ZMiYFAA5hTtFloQRjuydUTsPH7tgqqz9RZ+3GyFUkyxHLHuQlhVUPiVHi38lt+pomRkuf3R0LHeIqgjz3iDmDg==
+      initial-size: 5  
+      min-idle: 5  
+      max-active: 50  
+      max-wait: 300000  
+      time-between-eviction-runs-millis: 60000  
+      min-evictable-idle-time-millis: 300000  
+      validation-query: SELECT 1 FROM DUAL 
+      validation-query-timeout: 15000 
+      test-while-idle: true  
+      test-on-borrow: false  
+      test-on-return: false  
+      pool-prepared-statements: false  
+      max-pool-prepared-statement-per-connection-size: 20  
+      filters: config,stat
+      connection-properties: config.decrypt=true;druid.stat.slowSqlMillis=5000;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKe2ZA/qGZ5VolWHN4nr1qizvBsXEQkFo/x5v9tiZzmaN6v2oOFL19KEldUOn47hLWzmzonODxPpWRU3aXCDg+UCAwEAAQ==
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: 123456
+        url-pattern: '/druid/*'
+        reset-enable: false
+      web-stat-filter:
+        enabled: true
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,druid/*'
+#     filter:
+#       stat:
+#         enabled: true
+#         db-type: oracle
+#         log-slow-sql: true
+#         slow-sql-millis: 5000
+#  redis:
+#    host: localhost
+#    port: 6379 
+#    timeout: 3000
+#    pool:
+#      max-active: 8  
+#      max-wait: -1  
+#      max-idle: 8  
+#      min-idle: 0
+eviroment:
+       code: UATTestEnvironment41
+     

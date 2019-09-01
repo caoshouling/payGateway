@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration debug="false">
+ 
+	<!-- 定义日志的根目录  /u02/corelog-->
+	<property name="LOG_DIR" value="/u02/corelog" />
+	<!-- 定义日志文件名称 -->
+	<property name="appName" value="backend-car"></property>
+
+	<jmxConfigurator />
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{36}:%L - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- error目录-->
+    <appender name="errorAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${appName}/error/${appName}.log</file>
+		 <!-- 只记录ERROR日志   --> 
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter> 
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--滚动文件：按天进行日志滚动 %i：当文件大小超过maxFileSize时，按照i进行文件滚动 -->
+			<fileNamePattern>${LOG_DIR}/${appName}/error/${appName}-%d{yyyy-MM-dd}-%i.log
+			</fileNamePattern>
+			<!--则只保存最近30天的文件，删除之前的旧文件。 -->
+			<MaxHistory>30</MaxHistory>
+			<!-- 当日志文件超过maxFileSize指定的大小是，根据上面提到的%i进行日志文件滚动 -->
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36}:%L - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	 <!-- 只记录info及以上日志   --> 
+    <appender name="infoAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${appName}/info/${appName}.log</file>
+		 <!-- 只记录info及以上日志   --> 
+	    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">  
+	      <level>INFO</level>  
+	    </filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--滚动时产生的文件的存放位置及文件名称 %d{yyyy-MM-dd}：按天进行日志滚动 %i：当文件大小超过maxFileSize时，按照i进行文件滚动 -->
+			<fileNamePattern>${LOG_DIR}/${appName}/info/${appName}-%d{yyyy-MM-dd}-%i.log
+			</fileNamePattern>
+			<!--假设设置每天滚动，且maxHistory是15，则只保存最近15天的文件，删除之前的旧文件。注意，删除旧文件是， 那些为了归档而创建的目录也会被删除。 -->
+			<MaxHistory>15</MaxHistory>
+			<!-- 当日志文件超过maxFileSize指定的大小是，根据上面提到的%i进行日志文件滚动 -->
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36}:%L - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<!-- project default level-->
+	<logger name="com.sinosoft.payGateway" level="debug" additivity="false">
+		<appender-ref ref="console" />
+	    <appender-ref ref="infoAppender" />
+	    <appender-ref ref="errorAppender" />
+	    
+	</logger>  
+	<!--引用springboot默认配置
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>    --> 
+  
+    <!--myibatis log configure--> 
+    <logger name="com.apache.ibatis" level="DEBUG"/>
+    <logger name="java.sql.Connection" level="DEBUG"/>
+    <logger name="java.sql.Statement" level="DEBUG"/>
+    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+   
+	<root level="DEBUG">
+		<appender-ref ref="console" />
+	</root>
+
+</configuration>
