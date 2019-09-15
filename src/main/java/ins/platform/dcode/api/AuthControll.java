@@ -14,14 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.FlashMap;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sinosoft.payGateway.common.JsonResponse;
 
@@ -48,13 +44,13 @@ public class AuthControll {
     public String registerPage(Model model){
         return  "register";
     }
-//    @GetMapping(value = "/login")
-//    public String toLogin(HttpServletRequest request){
-//    	if(request.getSession().getAttribute(WebConstant.USER_SESSION) != null){
-//    		return  "main";
-//    	}
-//        return  "login";
-//    }
+    @RequestMapping(value = "/loginPage")
+    public String toLogin(HttpServletRequest request){
+    	if(request.getSession().getAttribute(WebConstant.USER_SESSION) != null){
+    		return  "main";
+    	}
+        return  "user/login";
+    }
     @RequestMapping(value = "/main")
     public String mainPage(Model model){
     	HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -69,52 +65,52 @@ public class AuthControll {
     	
         return  "main";
     }
-    
-    /**
-     * 返回页面
-     * @param redirectAttributes
-     * @param model
-     * @param user
-     * @param session
-     * @param request
-     * @param forwardUrl
-     * @return
-     */
-	@RequestMapping(value = "/login2",method = RequestMethod.POST,consumes = "application/x-www-form-urlencoded")
-	public String login(RedirectAttributes redirectAttributes,Model model, User user,HttpSession session,HttpServletRequest request
-			,@RequestParam(value = "forwardUrl",required = false) String forwardUrl) {
-	
-		 //获取用户名和密码
-        String username = user.getUserName();
-        String password = user.getPassword();
-        //
-        User user2=  userService.getUserByUserNameAndPassword(username,password);       
-        if(user2 != null){
-            //将用户对象添加到Session中
-            session.setAttribute(WebConstant.USER_SESSION,user);
-            
-            /** HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();*/
-            //方法1:通过request获取到flashMap，把参数设置到flashMap中，spring会自动将其设置到model中
-            FlashMap flashMap = (FlashMap)request.
-                    getAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE);
-            flashMap.put("userName", user2.getUserName());
-            System.out.println("------login----loginning-----user2.getUserName() = "+user2.getUserName() );
-            //方法2：通过传入的attr参数的addFlashAttribute方法保存到FlashMap中，和方法一效果一样
-            redirectAttributes.addFlashAttribute("ordersId", "1234");
-            //方法3：通过attr参数的addAttribute方法设置，这样设置的参数不会保存在FlashMap中，而是会保存到url中
-            redirectAttributes.addAttribute("local","zh-cn");
-            
-            if(forwardUrl == null || "".equals(forwardUrl)){
-            	 //重定向到主页面的跳转方法
-                return "redirect:main";
-            }else{
-            	return "redirect:"+forwardUrl;
-            }
-            
-        }
-        model.addAttribute("error", "用户名或密码错误！");
-		return "login";
-	}
+//    
+//    /**
+//     * 返回页面
+//     * @param redirectAttributes
+//     * @param model
+//     * @param user
+//     * @param session
+//     * @param request
+//     * @param forwardUrl
+//     * @return
+//     */
+//	@RequestMapping(value = "/login2",method = RequestMethod.POST,consumes = "application/x-www-form-urlencoded")
+//	public String login(RedirectAttributes redirectAttributes,Model model, User user,HttpSession session,HttpServletRequest request
+//			,@RequestParam(value = "forwardUrl",required = false) String forwardUrl) {
+//	
+//		 //获取用户名和密码
+//        String username = user.getUserName();
+//        String password = user.getPassword();
+//        //
+//        User user2=  userService.getUserByUserNameAndPassword(username,password);       
+//        if(user2 != null){
+//            //将用户对象添加到Session中
+//            session.setAttribute(WebConstant.USER_SESSION,user);
+//            
+//            /** HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();*/
+//            //方法1:通过request获取到flashMap，把参数设置到flashMap中，spring会自动将其设置到model中
+//            FlashMap flashMap = (FlashMap)request.
+//                    getAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE);
+//            flashMap.put("userName", user2.getUserName());
+//            System.out.println("------login----loginning-----user2.getUserName() = "+user2.getUserName() );
+//            //方法2：通过传入的attr参数的addFlashAttribute方法保存到FlashMap中，和方法一效果一样
+//            redirectAttributes.addFlashAttribute("ordersId", "1234");
+//            //方法3：通过attr参数的addAttribute方法设置，这样设置的参数不会保存在FlashMap中，而是会保存到url中
+//            redirectAttributes.addAttribute("local","zh-cn");
+//            
+//            if(forwardUrl == null || "".equals(forwardUrl)){
+//            	 //重定向到主页面的跳转方法
+//                return "redirect:main";
+//            }else{
+//            	return "redirect:"+forwardUrl;
+//            }
+//            
+//        }
+//        model.addAttribute("error", "用户名或密码错误！");
+//		return "login";
+//	}
 //	/**
 //	 * 返回json方式
 //	 * @param user
@@ -203,6 +199,10 @@ public class AuthControll {
         logger.info("验证码:{}", vcode);
 	}
 	
-	
+	@RequestMapping("/index")
+	public String  userform() {
+		
+		return "index" ;
+	}
 	
 }

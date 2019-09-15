@@ -55,7 +55,7 @@ public class UserControll {
 	public String  userInfo(Model model) {
 		model.addAttribute("user",SessionUtils.getCurrentUser());
 		return "set/info" ;
-	}	
+	}
 	@RequestMapping("/userlistPage")
 	public String  userlistPage() {
 		

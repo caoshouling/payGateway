@@ -18,9 +18,10 @@ spring:
   application:
     name: payGatway
   freemarker: 
-    suffix: ftl
+    suffix: .ftl
     charset: UTF-8
     template-loader-path: classpath:/templates
+    request-context-attribute: request   #必须配置才能使用${request.contextPath}
 mybatis:
   mapperLocations: ['classpath*:mapper/**/*Mapper.xml','classpath*:mapper/**/*MapperCustom.xml']
   executor-type: REUSE 
