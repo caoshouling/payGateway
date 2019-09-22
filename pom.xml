@@ -51,6 +51,8 @@
 	</properties>
 
 	<dependencies>
+	
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
@@ -63,6 +65,27 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- OAuth授权框架和OIDC核心数据结构和接口 -->
+		<dependency>
+	        <groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-oauth2-core</artifactId>
+        </dependency>
+		<!-- OAuth授权框架和OIDC 客户端功能实现 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+		</dependency>
+		<!--jose协议组:
+		       JWT (Json Web Token)
+		       JWS (Json Web Signnature)  
+		       JWE (Json Web Encryption) 
+		       JWK (Json Web Key)   
+		-->
+		<dependency>
+        	<groupId>org.springframework.security</groupId>
+	        <artifactId>spring-security-oauth2-jose</artifactId>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

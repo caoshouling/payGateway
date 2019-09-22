@@ -61,6 +61,7 @@ public class WebSecurityConfig   extends WebSecurityConfigurerAdapter {
 				     "/500", 
 				     "/auth/login",
 				     "/auth/vcode", 
+				     "/oauth2/authorization/github", 
 				     "/error").permitAll()
         .and().authorizeRequests()
 		.anyRequest().authenticated()

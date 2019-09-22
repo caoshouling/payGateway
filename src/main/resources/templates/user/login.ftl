@@ -52,6 +52,13 @@
 	</form>
 
   </div>
+  
+  <div class="container unauthenticated">
+ 
+  <div>
+    With Github: <a href="${ctx}/oauth2/authorization/github">Github登录</a>
+  </div>
+</div>
 
   <#include "../include-body.ftl"/>
  

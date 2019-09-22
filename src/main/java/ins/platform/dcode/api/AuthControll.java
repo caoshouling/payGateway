@@ -1,6 +1,7 @@
 package ins.platform.dcode.api;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -200,9 +201,14 @@ public class AuthControll {
 	}
 	
 	@RequestMapping("/index")
-	public String  userform() {
+	public String  index() {
 		
 		return "index" ;
 	}
-	
+	@RequestMapping("/hello")
+	@ResponseBody
+	public String  hello(Principal principal) {
+		
+		return "hello," +principal.getName();
+	}
 }
