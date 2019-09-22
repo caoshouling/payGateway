@@ -1,0 +1,86 @@
+pipeline{
+     agent any
+     
+     tools{
+         maven 'maven-3.5.0'
+     }
+    environment{
+         versionNo =  '200';
+     }
+     
+     stages{
+           
+           stage ("Which java") {
+               steps {
+                   script {
+                        bat "java -version"
+                   }
+               }
+           }
+           stage('build'){
+             
+            steps{
+                 bat """
+                  cd /D E:\\workspace\\java\\studyapp-2019\\payGateway
+                  mvn clean compile
+                  printenv
+                 """
+            //   bat "cd /D E:\\workspace\\java\\studyapp-2019\\payGateway"
+            //   bat "dir"
+            //   bat "mvn clean package spring-boot repackage"
+            //   bat "printenv"//
+            }
+            
+            post{
+                always{
+                   echo: '2222222222222222222222'
+                }
+            }
+             
+         }
+          
+     }
+      post{
+         //无论什么状态都执行
+    	 always{
+                echo: '00000000000000000000000000000000000011111111111111111111111111'
+                //workspace cleanup插件，pipeline完成后自动清理空间。默认是不清理的
+                cleanws()
+         }
+         failure{
+    	        echo: 'failure - 准备发邮件到1046757614@qq.com'
+                mail to: '1046757614@qq.com'
+         }
+         success{
+    	        echo: 'success - 准备发邮件到1046757614@qq.com'
+                mail to: '1046757614@qq.com'
+         }
+    	 //当前完成状态为不稳定的
+    	 unstable{
+                 
+                echo: 'unstable -  当前状态为不稳定的'
+    	 }
+    	 //当前执行结果终止状态时（一般人为中止）执行。
+         aborted{
+                echo: 'aborted - 终止了！！！！'
+         }
+    	 //上一次是成功的，但是本次是失败、不稳定或终止时执行
+    	 regression{
+                echo: 'regression - 上一次是成功的，但是本次是失败、不稳定或终止时执行'
+         }
+    	 //上次是失败、不稳定或终止，但本次是成功的。
+    	 fixed{
+                echo: 'fixed - 上次是失败、不稳定或终止，但本次是成功的。'
+         }
+    	 //当前状态与上一次完成状态不同时执行
+    	 changed{
+                 
+                echo: 'changed - 当前状态与上一次完成状态不同!!!'
+    	 }
+    	 //相当于java中的finally，在上面的条件块都完成后执行
+    	 cleanup{
+                echo: 'cleanup - 上面的条件块都完成了，最后执行'
+    	 }
+	 
+    }
+}
