@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,10 +45,17 @@ public class UserControll {
     @Autowired
     private JavamelodyMonitoringTest javamelodyMonitoringTest;
     
-	@RequestMapping("/getuser/{id}")
-	public String getUserById(Model model,@ApiParam(value="客户ID")@PathVariable Integer id) {
+	@RequestMapping("/getuser1/{id}")
+	public String getUserById1(Model model,@ApiParam(value="客户ID")@PathVariable Integer id) {
 		 model.addAttribute("message", "hello word33453433");
 		 User user=  userService.getUserById(id);
+		 model.addAttribute("username", user.getUserName());
+		return "hello" ;
+	}
+	@RequestMapping("/getuser2/{id}")
+	public String getUserById2(Model model,@ApiParam(value="客户ID")@PathVariable Integer id) {
+		 model.addAttribute("message", "hello word33453433");
+		 User user=  userService.getUserById2(id);
 		 model.addAttribute("username", user.getUserName());
 		return "hello" ;
 	}
@@ -66,7 +74,7 @@ public class UserControll {
 		
 		return "user/userform" ;
 	}	
-	@ApiOperation(value = "/用户查询接口", notes = "返回所有用户")
+	@ApiOperation(value = "用户查询接口", notes = "返回所有用户")
 	@RequestMapping("/userlist")
 	@ApiImplicitParams({
 	    @ApiImplicitParam(name="vo",value="查询条件",required=false,paramType="form",dataTypeClass=UserPageQueryVo.class),
@@ -158,5 +166,7 @@ public class UserControll {
 		userService.updateUser();
 		return new JsonResponse(time).success();
 	}
+	
+	
 	
 }

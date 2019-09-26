@@ -1,5 +1,6 @@
 package ins.platform.dcode.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -7,7 +8,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 //@ApiModel(value = "User", description = "用户信息描述")
-public class User {
+public class User implements Serializable{
 	
     private Integer id;
     //@ApiModelProperty("名称")

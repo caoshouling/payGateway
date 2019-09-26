@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,11 +27,16 @@ public class UserService {
 	@Autowired
 	UserMapper userMapper;
 	
+	@Cacheable(value = "user1", key = "#id")
 	public User getUserById(Integer id) {
 		
 		return userMapper.selectByPrimaryKey(id);
 	}
-	
+	@Cacheable(value = "user2", key = "#id")
+	public User getUserById2(Integer id) {
+		
+		return userMapper.selectByPrimaryKey(id);
+	}
 	public User getUserByUserNameAndPassword(String userName, String password) {
 		return userMapper.selectUserByUserNameAndPassword( userName,  password);
 	}
