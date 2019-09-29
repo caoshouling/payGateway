@@ -374,11 +374,19 @@ public final class XmlKit {
 	@SuppressWarnings("unchecked")
 	public static <T> T toBean(String xmlStr, Class<T> cls) {
 		XStream xstream = new XStream(new DomDriver());
+		//spring-boot-devtools 插件对于类一样的不能强转的BUG
+		xstream.setClassLoader(cls.getClassLoader());
+		
 		xstream.processAnnotations(cls);
 		//注册日期转换器
 		xstream.registerConverter(new XStreamYearToDayConverter());
 		xstream.registerConverter(new XStreamYearToSecondConverter());
-		T obj = (T)xstream.fromXML(xmlStr);
+		//解决报错：com.thoughtworks.xstream.security.ForbiddenClassException
+		xstream.allowTypeHierarchy(cls);
+		//Security framework of XStream not initialized,
+		//XStream.setupDefaultSecurity(xstream);
+
+		T obj = (T) xstream.fromXML(xmlStr);
 		return obj;
 	}
 	
@@ -404,6 +412,7 @@ public final class XmlKit {
 				};
 			}
 		};
+		xstream.setClassLoader(cls.getClassLoader());
 		xstream.processAnnotations(cls);
 		//注册日期转换器
 		xstream.registerConverter(new XStreamYearToDayConverter());

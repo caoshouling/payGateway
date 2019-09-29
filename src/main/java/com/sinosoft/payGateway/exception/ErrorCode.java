@@ -11,19 +11,18 @@ public final class ErrorCode {
 	/**没有权限*/
 	public static final int  Permission_Denied   = 1002;
 	 
-	/**方法参数异常，进入不了方法*/
+	/**方法参数异常，进入不了controller*/
 	public static final String  Method_Params_Error = "A0001";
 	
-	 /**1开头的：业务异常  1001 普通业务异常*/
-	public static final String  Business_Common_Error = "A1000";
-	 
-	 /**业务异常：数据校验异常*/
-	public static final String  Business_DataValid_Error = "A1001";
-	 
-	/**B-违反内部业务规则*/
-	public final static  String B0101 = "B0101";
+	/**参数异常：不符合接口规范*/
+	public static final String  BreakSpecification_Error = "A1002";
+	/**普通业务异常：违反内部业务规则*/
+	public static final String  Business_Common_Error = "A1003";
+	 /**普通业务异常：数据校验层异常，也属于*/
+	public static final String  Business_DataValid_Error = "A1004";
 	
-	/** D-系统内部错误*/
+	
+	/** D-数据库异常*/
 	public final static  String DataBase_Error = "D0101";
 
 	/**D010101 数据库操作未执行或回滚*/

@@ -40,8 +40,12 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sinosoft.payGateway.common.SpringTool;
 import com.sinosoft.payGateway.exception.BusinessException;
 import com.sinosoft.payGateway.exception.ErrorCode;
+
+import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.io.IoUtil;
  
 /**
  * 
@@ -389,7 +393,8 @@ public class HttpKit {
 	 */
 	public static String doPostForm(String postUrl, Map<String,String> params,String encoding, int socketTimeOutParam,String serviceName) throws Exception {
         String resPonse = "";
-		CloseableHttpClient httpClient = HttpClients.createDefault();
+        //注意：使用连接池时，不能关闭。 而单独使用时必须finally中关闭 
+		CloseableHttpClient httpClient = createPoolStyleCloseableHttpClient();
 		try {
 			HttpPost httpPost = new HttpPost("http://httpbin.org/post");
 			httpPost.setURI(URI.create(postUrl));
@@ -432,13 +437,15 @@ public class HttpKit {
 		} catch (Exception e) {
 			logger.error("URL["+postUrl+"]未知异常："+e.getMessage(),e);
 			throw new BusinessException(ErrorCode.ThirdPart_UnKnow_Error, serviceName+"出现未知异常");
-		}finally{
-			httpClient.close();
 		}
+//		finally{
+//			httpClient.close();
+//		}
 		return resPonse;
 		
 	}
  
+	
 	/**
 	 * 发送Post请求
 	 * @param url
@@ -449,12 +456,13 @@ public class HttpKit {
 	 * @throws ClientProtocolException 
 	 * @throws Exception
 	 */
-	public static String doPost(String url, String content,String encoding,int socketTimeoutMillis) throws  Exception {
+	public static String doPost(String postUrl, String content,String encoding,int socketTimeoutMillis,String serviceName) throws  Exception {
         String resPonse = "";
-		CloseableHttpClient httpClient = HttpClients.createDefault();
+        //注意：使用连接池时，不能关闭。 而单独使用时必须finally中关闭 
+      	CloseableHttpClient httpClient = createPoolStyleCloseableHttpClient();
 		try {
 			HttpPost httpPost = new HttpPost("http://httpbin.org/post");
-			httpPost.setURI(URI.create(url));
+			httpPost.setURI(URI.create(postUrl));
 			//如果没有传送超时，默认两分钟
 			if (socketTimeoutMillis <= 0){
 				socketTimeoutMillis = socketTimeout;
@@ -476,8 +484,19 @@ public class HttpKit {
 			} finally {
 				httpResponse.close();
 			}
+		} catch (ConnectTimeoutException e) {
+			logger.error("URL["+postUrl+"]连接超时："+e.getMessage());
+			throw new BusinessException(ErrorCode.ThirdPart_Connect_TimeOut,"连接"+serviceName+"超时（超过"+(connectTimeout/1000)+"秒）");
+			
+		} catch (SocketTimeoutException e) {
+			logger.error("URL["+postUrl+"]响应超时："+e.getMessage());
+			throw new BusinessException(ErrorCode.ThirdPart_Socket_TimeOut, serviceName+"响应超时（超过"+(socketTimeout/1000)+"秒）");
+		} catch (Exception e) {
+			logger.error("URL["+postUrl+"]未知异常："+e.getMessage(),e);
+			throw new BusinessException(ErrorCode.ThirdPart_UnKnow_Error, serviceName+"出现未知异常");
 		}finally{
-			httpClient.close();
+			//使用连接池不能关闭客户端，单独使用必须关闭
+			//httpClient.close();
 		}
 		return resPonse;
 		
@@ -490,9 +509,9 @@ public class HttpKit {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String doPost(String url, String content,String encoding) throws Exception {
+	public static String doPost(String url, String content,String encoding,String serviceName) throws Exception {
         
-		return doPost(url, content, encoding, 0);
+		return doPost(url, content, encoding, 0,serviceName);
 		
 	}
 		/**
@@ -507,10 +526,9 @@ public class HttpKit {
 		public static String doPostSoap1_1(String postUrl, String soapXml,
 				String soapAction, int socketTimeout,String serviceName) {
 		String retStr = "";
-		// 创建HttpClientBuilder
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-		// HttpClient
-		CloseableHttpClient closeableHttpClient = httpClientBuilder.build();
+		//注意：使用连接池时，不能关闭。 而单独使用时必须finally中关闭 
+      	CloseableHttpClient closeableHttpClient = createPoolStyleCloseableHttpClient();
+      	
 		HttpPost httpPost = new HttpPost(postUrl);
                 //  设置请求和传输超时时间
 		//如果没有传送超时，默认两分钟
@@ -534,8 +552,7 @@ public class HttpKit {
 				// 打印响应内容
 				retStr = EntityUtils.toString(httpEntity, "UTF-8");
 			}
-			// 释放资源
-			closeableHttpClient.close();
+			
 		} catch (ConnectTimeoutException e) {
 			logger.error("URL["+postUrl+"]连接超时："+e.getMessage());
 			throw new BusinessException(ErrorCode.ThirdPart_Connect_TimeOut,"连接"+serviceName+"超时（超过"+(connectTimeout/1000)+"秒）");
@@ -546,6 +563,9 @@ public class HttpKit {
 		} catch (Exception e) {
 			logger.error("URL["+postUrl+"]未知异常："+e.getMessage(),e);
 			throw new BusinessException(ErrorCode.ThirdPart_UnKnow_Error, serviceName+"出现未知异常");
+		}finally{
+			// 释放资源
+			//closeableHttpClient.close();
 		}
 		return retStr;
 	}
@@ -562,10 +582,9 @@ public class HttpKit {
 	public static String doPostSoap1_2(String postUrl, String soapXml,
 			String soapAction, int socketTimeout) throws Exception {
 		String retStr = "";
-		// 创建HttpClientBuilder
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-		// HttpClient
-		CloseableHttpClient closeableHttpClient = httpClientBuilder.build();
+		//注意：使用连接池时，不能关闭。 而单独使用时必须finally中关闭 
+      	CloseableHttpClient closeableHttpClient = createPoolStyleCloseableHttpClient();
+      	
 		HttpPost httpPost = new HttpPost(postUrl);
                 // 设置请求和传输超时时间
 		//如果没有传送超时，默认两分钟
@@ -590,11 +609,13 @@ public class HttpKit {
 				// 打印响应内容
 				retStr = EntityUtils.toString(httpEntity, "UTF-8");
 			}
-			// 释放资源
-			closeableHttpClient.close();
+			
 		} catch (Exception e) {
 			logger.error("doPostSoap1_2 exception:"+e.getMessage(), e);
 			throw e;
+		}finally{
+			// 释放资源
+			//closeableHttpClient.close();
 		}
 		return retStr;
 	}
@@ -615,38 +636,37 @@ public class HttpKit {
         return url;
         
     }
+	/**
+	 * 解析成查询参数
+	 * @param request
+	 * @return
+	 * @throws IOException 
+	 * @throws IORuntimeException 
+	 */
+	public static String getString(HttpServletRequest request) throws IORuntimeException, IOException{
+		
+		return IoUtil.read(request.getInputStream(), "UTF-8");
+		
+	}
+	
+	/**
+	 * 通过连接池的方式，和RestTemplate共用一个连接池
+	 * 
+	 * @return
+	 */
+	public static CloseableHttpClient createPoolStyleCloseableHttpClient(){
+		
+		return (CloseableHttpClient) SpringTool.getBean("CloseableHttpClient");
+	}
+	
+	
+	
 	
 	
 	public static void main(String[] args) throws Exception {
-		logger.info("-start-->");
-		String result = "";
 		
-		
-		try {
-			//result = HttpKit.doPostSoap1_1("http://10.13.1.222:9080/prpall/ssss/xxx", "", "", 1000,"车险平台");
-			mockError();
-			
-		} catch (Exception e) {
-			if("connect timed out".equals(e.getMessage())){
-				logger.info("连接超时"+e.getMessage());
-			}else if("read timed out".equals(e.getMessage())){
-				logger.info("-read timed out-->"+e.getMessage());
-			}
-			logger.info("-Exception-->"+e.getMessage());
-		}
-		logger.info("-end-->"+result);
 		
 	}
-	public static void mockError() throws IOException{
-		URL url = new URL("http://10.13.1.41:9080/prpall/sd/xxx");
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("GET");
-		//10秒连接超时
-		connection.setConnectTimeout(1);  
-		//15秒读取超时
-		connection.setReadTimeout(1);  
-		DataInputStream in = new DataInputStream(connection.getInputStream());
-		in.close();	
-	}
+	
 
 }

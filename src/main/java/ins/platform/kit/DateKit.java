@@ -26,7 +26,12 @@ public class DateKit {
 	public final static int HOUR_OF_DAY = 3;// 时
 	public final static int MINUTE = 4;// 分
 	public final static int SECOND = 5;// 秒
-
+	
+	public final static String NoSeparator_YEAR_TO_DAY = "yyyyMMdd";
+	
+	public final static String NoSeparator_YEAR_TO_SECOND = "yyyyMMddHHmmss";
+	
+	public final static String NoSeparator_HOUR_TO_SECOND = "HHmmss";
 	
 	/**
 	 *  获取月份差，不满一个月也才算一月 

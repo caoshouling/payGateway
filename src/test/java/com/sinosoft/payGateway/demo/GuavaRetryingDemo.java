@@ -52,7 +52,7 @@ public class GuavaRetryingDemo {
 			public String call() throws Exception {
 				counter++;
 				logger.info("do sth :"+ counter);
-				if (counter < 5) {
+				if (counter < 2) {
 					throw new RuntimeException("sorry");
 				}
 				Thread.sleep(1000);
@@ -62,7 +62,7 @@ public class GuavaRetryingDemo {
 	}
 
 	public static void main(String[] params) throws Exception {
-		retryMethodWithResult(10L,3,callableWithException(),RuntimeException.class,null);
+		System.out.println("正常结束，返回值："+retryMethodWithResult(10L,3,callableWithException(),RuntimeException.class,null));
 	}
 	/**
 	 * 重试方法
@@ -74,8 +74,8 @@ public class GuavaRetryingDemo {
 	 * @param result          需要重试的结果
 	 * @throws Exception
 	 */
-	public static <T> void retryMethodWithResult(long delay_Seconds, int retryTimes,
-		Callable<T> callableMethod,Class< ? extends Exception> class_exception,T result) throws Exception {
+	public static <T> T retryMethodWithResult(long delay_Seconds, int retryTimes,
+		Callable<T> callableMethod,Class< ? extends Exception> class_exception,T retryValue) throws Exception {
 
 		RetryerBuilder<T> builder = RetryerBuilder.<T>newBuilder();
 		
@@ -95,13 +95,13 @@ public class GuavaRetryingDemo {
 		if(class_exception !=null){
 			builder.retryIfExceptionOfType(class_exception);
 		}
-		if(result !=null){
-			builder.retryIfResult(Predicates.equalTo(result)); 
+		if(retryValue !=null){
+			builder.retryIfResult(Predicates.equalTo(retryValue)); 
 		}
 		
 		Retryer<T> retryer = builder.build();
 	
-		retryer.call(callableMethod);
+		return retryer.call(callableMethod);
         /***
          *  主要接口
          *   

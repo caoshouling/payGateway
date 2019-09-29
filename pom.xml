@@ -35,23 +35,23 @@
 		<xstream.version>1.4.11.1</xstream.version>
 		<mybatis-paginator.version>1.2.17</mybatis-paginator.version>
 		
-		
-		
-		<hibernate.validator.version>5.4.3.Final</hibernate.validator.version>
-		<javamelody-spring-boot-starter.version>1.79.0</javamelody-spring-boot-starter.version>
-		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-		<com.google.guava.version>28.1-jre</com.google.guava.version>
-		
-		
-		<pagehelper.version>5.1.10</pagehelper.version>
+		<hibernate.validator.version>5.4.3.Final</hibernate.validator.version> 
+ 		<javamelody-spring-boot-starter.version>1.79.0</javamelody-spring-boot-starter.version> 
+ 		<springfox-swagger2.version>2.9.2</springfox-swagger2.version> 
+ 		<com.google.guava.version>28.1-jre</com.google.guava.version> 
+ 		<orika-core.version>1.5.4</orika-core.version> 
+ 		
+ 		<cglib-nodep.version>3.3.0</cglib-nodep.version> 
+ 		<typetools.version>0.6.1</typetools.version>
+ 		
+        <pagehelper.version>5.1.10</pagehelper.version>
 		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
 		
-		
+		<guava-retrying.version>2.0.0</guava-retrying.version>
 		
 	</properties>
-
-	<dependencies>
 	
+	<dependencies>
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,6 +90,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>  
+		    <groupId>org.springframework.boot</groupId>  
+		    <artifactId>spring-boot-starter-aop</artifactId>  
+		</dependency> 
 		<!-- redis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -124,7 +128,12 @@
 		    <artifactId>guava</artifactId>
 		    <version>${com.google.guava.version}</version>
 		</dependency>
-        
+        <!-- guava-retrying -->
+		<dependency>
+		    <groupId>com.github.rholder</groupId>
+		    <artifactId>guava-retrying</artifactId>
+		    <version>${guava-retrying.version}</version>
+		</dependency>
 		<!-- 分页插件 mybatis-paginator -->
 		<dependency>
 		    <groupId>com.github.miemiedev</groupId>
@@ -142,6 +151,38 @@
 		<dependency>
 		    <groupId>org.apache.httpcomponents</groupId>
 		    <artifactId>httpclient</artifactId>
+		</dependency>
+		
+		
+		
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>${springfox-swagger2.version}</version>
+		</dependency>
+		 <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger2.version}</version> 
+        </dependency>
+        <!-- hibernate-validator -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>${hibernate.validator.version}</version>
+		</dependency>
+      	<!-- 监控 javamelody-spring-boot-starter -->
+		<dependency>
+		    <groupId>net.bull.javamelody</groupId>
+		    <artifactId>javamelody-spring-boot-starter</artifactId>
+		    <version>${javamelody-spring-boot-starter.version}</version>
+		</dependency>
+        <!-- 谷歌分页 com.google.guava/guava -->
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>${com.google.guava.version}</version>
 		</dependency>
 				
 		<!-- FastJson替换Jackson -->
@@ -257,6 +298,18 @@
 			</systemPath>  
 		</dependency> 
 		
+		<!-- typetools:解析泛型类型Java工具 -->
+		<dependency>
+		    <groupId>net.jodah</groupId>
+		    <artifactId>typetools</artifactId>
+		    <version>${typetools.version}</version>
+		</dependency>
+		<!-- bean复制工具类 orika-core -->
+		<dependency>
+		    <groupId>ma.glasnost.orika</groupId>
+		    <artifactId>orika-core</artifactId>
+		    <version>${orika-core.version}</version>
+		</dependency>
 		
 		
 		<dependency>

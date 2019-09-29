@@ -46,14 +46,14 @@ public class BusinessException extends RuntimeException {
 	public static BusinessException errorMessage(String message){
 		BusinessException exception =new BusinessException();
 		exception.message = message;
-		exception.errorCode = ErrorCode.B0101;
+		exception.errorCode = ErrorCode.Business_Common_Error;
 		return exception;
 	}
 	
 	public BusinessException(String message){
 		super(message);
 		this.message = message;
-		this.errorCode = ErrorCode.B0101; 
+		this.errorCode = ErrorCode.Business_Common_Error; 
 	}
 	
 	public BusinessException(String errorCode,String message){

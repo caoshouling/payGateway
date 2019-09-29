@@ -1,9 +1,11 @@
 package ins.platform.kit;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import ins.framework.utils.Beans;
+import org.springframework.util.CollectionUtils;
+
 
 public class CollectionKit {
 	/**
@@ -24,10 +26,15 @@ public class CollectionKit {
     	  V v = null;
     	  for(int i= 0 ; i < source.size();i++){
     		  v = clazzV.newInstance();  
-    		  Beans.copy().from(source.get(i)).to(v); 
+    		  BeanKit.copy(source.get(i),v); 
     		  target.add(v);
     	  }
     	  return target;
     	
+    }
+    
+    public boolean isEmpty(Collection<?> collection){
+    	
+    	return CollectionUtils.isEmpty(collection);
     }
 }
