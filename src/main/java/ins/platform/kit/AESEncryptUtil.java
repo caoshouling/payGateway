@@ -99,17 +99,63 @@ public class AESEncryptUtil {
         }
         return sb.toString();
     }
+    /**
+     * 获取随机秘钥
+     * @return
+     */
+    public static String getRandomKey() {
+    	return getKeyByPass(null);
+    }
+     /**
+     * 使用指定的字符串生成秘钥
+     * 如果为空，那么生成随机的秘钥
+     * 说明：128位二进制转换成十六进制的字符串长度是32位
+     */
+     public static String getKeyByPass(String originPassword) {
+     
+       try {
+         KeyGenerator kg = KeyGenerator.getInstance("AES");
+         // kg.init(128);//要生成多少位，只需要修改这里即可128, 192或256
+         //SecureRandom是生成安全随机数序列，password.getBytes()是种子，只要种子相同，序列就一样，所以生成的秘钥就一样。
+         if(originPassword != null && originPassword.length() > 0){
+        	 kg.init(128, new SecureRandom(originPassword.getBytes()));
+         }else{
+        	 kg.init(128);
+         }
+         
+         SecretKey sk = kg.generateKey();
+         byte[] b = sk.getEncoded();
+         return parseByte2HexStr(b);//转换成十六进制
+         
+       }catch (NoSuchAlgorithmException e) {
+         e.printStackTrace();
+       
+       }
+       return originPassword;
+     }
+    
 	
     public static void main(String[] a) throws Exception {
+    	//密码生成秘钥，密码不变，秘钥就不变。
+    	//
+    	System.out.println("密码生成秘钥："+getKeyByPass("Utic1234"));
+        System.out.println("随机生成秘钥："+ getRandomKey());
+    	
+    	
     	 // SECRET_AES_KEY
-        String SECRET_AES_KEY = "abcdefghijklmnop";
+        String SECRET_AES_KEY = getRandomKey();
+        System.out.println("秘钥："+ SECRET_AES_KEY);
         //原始报文
-        String content = "CONTENT_XML";
+        String content = "是否急克鲁赛德金风科技圣诞快乐荆防颗粒是多久风口浪尖 ";
         
         System .out.println("原始报文 ： " + content);
         String encryptContent = AESEncryptUtil.encrypt(content,SECRET_AES_KEY);
         System.out.println("加密后报文 ： " +encryptContent );
         String decryptContent = AESEncryptUtil.decrypt(encryptContent,SECRET_AES_KEY);
         System.out.println("解密后报文 ： " +decryptContent );
+        
+        
+      
+     
     }
 }
