@@ -14,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sinosoft.payGateway.exception.BusinessException;
 
+import ins.platform.annotation.Limit;
 import ins.platform.common.SessionUtils;
 import ins.platform.dcode.dao.UserMapper;
 import ins.platform.dcode.po.User;
@@ -102,6 +103,7 @@ public class UserService {
 		userMapper.updateByPrimaryKey(user);
 		return user;
 	}
+	@Limit(key = "test", period = 10, count = 10)
 	@Transactional(rollbackFor=Exception.class)
 	public void updateUser(){
 		User user = userMapper.selectByPrimaryKey(1);
