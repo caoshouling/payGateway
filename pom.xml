@@ -32,7 +32,7 @@
 		<QLExpress.version>3.2.3</QLExpress.version>
 		<commons-lang3.version>3.9</commons-lang3.version>
 		<jdom.version>2.0.6</jdom.version>
-		<xstream.version>1.4.11.1</xstream.version>
+		<xstream.version>1.4.15</xstream.version>
 		<mybatis-paginator.version>1.2.17</mybatis-paginator.version>
 		
 		<hibernate.validator.version>5.4.3.Final</hibernate.validator.version> 
