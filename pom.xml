@@ -38,7 +38,7 @@
 		<hibernate.validator.version>5.4.3.Final</hibernate.validator.version> 
  		<javamelody-spring-boot-starter.version>1.79.0</javamelody-spring-boot-starter.version> 
  		<springfox-swagger2.version>2.9.2</springfox-swagger2.version> 
- 		<com.google.guava.version>28.1-jre</com.google.guava.version> 
+ 		<com.google.guava.version>29.0-jre</com.google.guava.version> 
  		<orika-core.version>1.5.4</orika-core.version> 
  		
  		<cglib-nodep.version>3.3.0</cglib-nodep.version> 
